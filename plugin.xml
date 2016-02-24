@@ -14,15 +14,6 @@
         <clobbers target="Alarm" />
     </js-module>
 
-    <platform name="ios">
-        <config-file target="config.xml" parent="/*">
-            <feature name="AlarmPlugin">
-                <param name="ios-package" value="AlarmPlugin"/>
-            </feature>
-    </config-file>
-    <header-file src="src/ios/AlarmPlugin.h" target-dir="src/ios" />
-        <source-file src="src/ios/AlarmPlugin.m" target-dir="src/ios" />
-    </platform>
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="AlarmPlugin">
