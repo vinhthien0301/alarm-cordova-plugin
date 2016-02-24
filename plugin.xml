@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+  id="com.techstorm.helloworld"
+  version="0.0.1">
+
+    <name>AlarmPlugin</name>
+    <description>AlarmPlugin Description</description>
+    <author>TechStorm</author>
+    <license>Apache 2.0 License</license>
+    <engines>
+        <engine name="cordova" version=">=3.5.0" />
+    </engines>
+    <js-module src="www/alarm.js" name="alarm">
+        <clobbers target="Alarm" />
+    </js-module>
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="AlarmPlugin">
+                <param name="ios-package" value="AlarmPlugin"/>
+            </feature>
+    </config-file>
+    <header-file src="src/ios/AlarmPlugin.h" target-dir="src/ios" />
+        <source-file src="src/ios/AlarmPlugin.m" target-dir="src/ios" />
+    </platform>
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="AlarmPlugin">
+                <param name="android-package" value="com.techstorm.AlarmPlugin"/>
+            </feature>
+        </config-file>
+        <source-file src="src/android/com/techstorm/AlarmPlugin.java" target-dir="src/com/techstorm" />
+    </platform>
+
+</plugin>
