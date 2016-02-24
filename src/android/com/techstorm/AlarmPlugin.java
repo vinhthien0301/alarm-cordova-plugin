@@ -1,4 +1,4 @@
-package mobi.monaca;
+package com.techstorm;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
