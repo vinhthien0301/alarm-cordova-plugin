@@ -29,7 +29,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
-import android.widget.Toast;
 
 public class AlarmHandler extends BroadcastReceiver {
 	
@@ -38,7 +37,6 @@ public class AlarmHandler extends BroadcastReceiver {
 		Calendar now = Calendar.getInstance();
 		if (afterTime(now.getTime(), DataStorage.getTimeFrom(context))
 				&& afterTime(DataStorage.getTimeTo(context), now.getTime())) {
-			Toast.makeText(context, "jhhhhhh", Toast.LENGTH_SHORT).show();
 			
 			try {
 				AssetFileDescriptor afd = context.getAssets().openFd("www/sounds/"+DataStorage.getMp3(context));
@@ -46,6 +44,10 @@ public class AlarmHandler extends BroadcastReceiver {
 				player.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
 				player.prepare();
 				player.start();
+				
+//				getWindow().addFlags(
+//						WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+//								| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
