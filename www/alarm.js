@@ -1,6 +1,6 @@
 var Alarm = function() {};
 
-Alarm.prototype.say = function(success, fail) {
+Alarm.prototype.wakeup = function(success, fail) {
     cordova.exec(success, fail, "AlarmPlugin","wakeup", []);
 };
 

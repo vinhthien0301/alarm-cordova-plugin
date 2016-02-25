@@ -12,6 +12,9 @@ public class AlarmPlugin extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         callbackContext.success("Hello World!");
+        cordova.getActivity().getWindow().addFlags(
+                                                   WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                                                   | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         return true;
     }    
 }
