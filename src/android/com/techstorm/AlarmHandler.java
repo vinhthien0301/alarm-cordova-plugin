@@ -18,12 +18,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
+import android.widget.Toast;
 
 public class AlarmHandler extends BroadcastReceiver {
 	
@@ -32,9 +38,24 @@ public class AlarmHandler extends BroadcastReceiver {
 		Calendar now = Calendar.getInstance();
 		if (afterTime(now.getTime(), DataStorage.getTimeFrom(context))
 				&& afterTime(DataStorage.getTimeTo(context), now.getTime())) {
+			Toast.makeText(context, "jhhhhhh", Toast.LENGTH_SHORT).show();
+			
+			try {
+				AssetFileDescriptor afd = context.getAssets().openFd("www/sounds/"+DataStorage.getMp3(context));
+				MediaPlayer player = new MediaPlayer();
+				player.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
+				player.prepare();
+				player.start();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			
 		} else {
-			
+			Intent alarmIntent = new Intent(context, AlarmHandler.class);
+			alarmIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			PendingIntent alarmHandler = PendingIntent.getBroadcast(context, AlarmPlugin.ID_ONETIME_OFFSET, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+			alarmManager.cancel(alarmHandler);
 		}
 	}
 	
