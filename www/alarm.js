@@ -1,15 +1,7 @@
 var Alarm = function() {};
 
-Alarm.prototype.startService = function(success, fail) {
-    cordova.exec(success, fail, "AlarmPlugin","startService", []);
-};
-
-Alarm.prototype.stopService = function(success, fail) {
-    cordova.exec(success, fail, "AlarmPlugin","stopService", []);
-};
-
-Alarm.prototype.schedule = function(interval, timeFrom, timeTo, success, fail) {
-    cordova.exec(success, fail, "AlarmPlugin","schedule", [interval, timeFrom, timeTo]);
+Alarm.prototype.schedule = function(interval, timeFrom, timeTo, mp3, success, fail) {
+    cordova.exec(success, fail, "AlarmPlugin","schedule", [interval, timeFrom, timeTo, mp3]);
 };
 
 var alarm = new Alarm();
