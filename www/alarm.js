@@ -8,7 +8,7 @@ Alarm.prototype.stopService = function(success, fail) {
     cordova.exec(success, fail, "AlarmPlugin","stopService", []);
 };
 
-Alarm.prototype.wakeup = function(interval, timeFrom, timeTo, success, fail) {
+Alarm.prototype.schedule = function(interval, timeFrom, timeTo, success, fail) {
     cordova.exec(success, fail, "AlarmPlugin","schedule", [interval, timeFrom, timeTo]);
 };
 
