@@ -24,6 +24,13 @@
             <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
             <uses-permission android:name="android.permission.WAKE_LOCK" />
         </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <receiver android:name="com.techstorm.AlarmHandler">
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
+                </intent-filter>
+            </receiver>
+        </config-file>
         <source-file src="src/android/com/techstorm/AlarmPlugin.java" target-dir="src/com/techstorm" />
         <source-file src="src/android/com/techstorm/DataStorage.java" target-dir="src/com/techstorm" />
         <source-file src="src/android/com/techstorm/AlarmHandler.java" target-dir="src/com/techstorm" />
