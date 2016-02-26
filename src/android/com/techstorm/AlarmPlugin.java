@@ -6,12 +6,11 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
-import android.annotation.SuppressLint;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
 /**
  * This class echoes a string called from JavaScript.
@@ -37,7 +36,7 @@ public class AlarmPlugin extends CordovaPlugin {
 					    alarmIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 						PendingIntent sender = PendingIntent.getBroadcast(context, ID_ONETIME_OFFSET, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 						AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-						alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmDate.getTimeInMillis(), interval, sender);
+						alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmDate.getTimeInMillis(), interval*1000, sender);
 						
 						callbackContext.success();
 					} catch (JSONException e) {

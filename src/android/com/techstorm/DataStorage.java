@@ -36,7 +36,8 @@ public class DataStorage {
 			date = formatter.parse(interval);
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
-			long intervalLong = (calendar.get(Calendar.HOUR) * 60 + calendar.get(Calendar.HOUR)) * 60; 
+			long intervalLong = (calendar.get(Calendar.HOUR_OF_DAY) * 60 
+					+ calendar.get(Calendar.MINUTE)) * 60 + calendar.get(Calendar.SECOND); 
 			editor.putLong(DATA_INTERVAL, intervalLong);
 			editor.commit();
 		} catch (ParseException e) {

@@ -23,12 +23,16 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.app.AlarmManager;
+import android.app.KeyguardManager;
+import android.app.KeyguardManager.KeyguardLock;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 
 public class AlarmHandler extends BroadcastReceiver {
 	
@@ -37,7 +41,6 @@ public class AlarmHandler extends BroadcastReceiver {
 		Calendar now = Calendar.getInstance();
 		if (afterTime(now.getTime(), DataStorage.getTimeFrom(context))
 				&& afterTime(DataStorage.getTimeTo(context), now.getTime())) {
-			
 			try {
 				AssetFileDescriptor afd = context.getAssets().openFd("www/sounds/"+DataStorage.getMp3(context));
 				MediaPlayer player = new MediaPlayer();
@@ -51,6 +54,13 @@ public class AlarmHandler extends BroadcastReceiver {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
+			PowerManager pm = (PowerManager) context.getApplicationContext().getSystemService(Context.POWER_SERVICE);
+			WakeLock wakeLock = pm.newWakeLock((PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
+			wakeLock.acquire();
+			KeyguardManager keyguardManager = (KeyguardManager) context.getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE); 
+			KeyguardLock keyguardLock = keyguardManager.newKeyguardLock("TAG");
+			keyguardLock.disableKeyguard();
 			
 		} else {
 			Intent alarmIntent = new Intent(context, AlarmHandler.class);
