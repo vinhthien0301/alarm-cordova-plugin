@@ -31,7 +31,8 @@ public class AlarmPlugin extends CordovaPlugin {
 						DataStorage.setMp3(context, args.get(3).toString());
 						
 						Intent alarmIntent = new Intent(context, AlarmHandler.class);
-						long interval = DataStorage.getInterval(context);
+//						long interval = DataStorage.getInterval(context);
+						long interval = 2;
 						Calendar alarmDate = Calendar.getInstance();
 					    alarmIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 						PendingIntent sender = PendingIntent.getBroadcast(context, ID_ONETIME_OFFSET, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);

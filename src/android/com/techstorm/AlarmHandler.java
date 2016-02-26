@@ -38,6 +38,11 @@ public class AlarmHandler extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		PowerManager pm = (PowerManager) context.getApplicationContext().getSystemService(Context.POWER_SERVICE);
+		WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
+		KeyguardManager keyguardManager = (KeyguardManager) context.getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE); 
+		KeyguardLock keyguardLock = keyguardManager.newKeyguardLock("TAG");
+		
 		Calendar now = Calendar.getInstance();
 		if (afterTime(now.getTime(), DataStorage.getTimeFrom(context))
 				&& afterTime(DataStorage.getTimeTo(context), now.getTime())) {
@@ -48,19 +53,13 @@ public class AlarmHandler extends BroadcastReceiver {
 				player.prepare();
 				player.start();
 				
-//				getWindow().addFlags(
-//						WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-//								| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
-			PowerManager pm = (PowerManager) context.getApplicationContext().getSystemService(Context.POWER_SERVICE);
-			WakeLock wakeLock = pm.newWakeLock((PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
 			wakeLock.acquire();
-			KeyguardManager keyguardManager = (KeyguardManager) context.getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE); 
-			KeyguardLock keyguardLock = keyguardManager.newKeyguardLock("TAG");
 			keyguardLock.disableKeyguard();
+			wakeLock.release();
 			
 		} else {
 			Intent alarmIntent = new Intent(context, AlarmHandler.class);
@@ -68,6 +67,9 @@ public class AlarmHandler extends BroadcastReceiver {
 			PendingIntent alarmHandler = PendingIntent.getBroadcast(context, AlarmPlugin.ID_ONETIME_OFFSET, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 			alarmManager.cancel(alarmHandler);
+			
+			wakeLock.release();
+			keyguardLock.reenableKeyguard();
 		}
 	}
 	
