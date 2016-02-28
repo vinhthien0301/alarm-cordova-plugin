@@ -10,26 +10,28 @@
     <engines>
         <engine name="cordova" version=">=3.5.0" />
     </engines>
-    <js-module src="www/alarm.js" name="alarm">
+    
+    <dependency id="de.appplant.cordova.plugin.local-notification" />
+    
+    <js-module src="www/alarm.js" name="AlarmPlugin">
         <clobbers target="Alarm" />
     </js-module>
+    
 
     <platform name="android">
+        <framework src="com.android.support:support-v4:+" value="gradle" />
+        
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="AlarmPlugin">
                 <param name="android-package" value="com.techstorm.AlarmPlugin"/>
             </feature>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/*">
-            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
             <uses-permission android:name="android.permission.WAKE_LOCK" />
             <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <receiver android:name="com.techstorm.AlarmHandler">
-                <intent-filter>
-                    <action android:name="android.intent.action.BOOT_COMPLETED" />
-                </intent-filter>
+            <receiver android:name="com.techstorm.AlarmHandler" android:process=":remote">
             </receiver>
         </config-file>
         <source-file src="src/android/com/techstorm/AlarmPlugin.java" target-dir="src/com/techstorm" />
