@@ -65,8 +65,8 @@ abstract public class AbstractTriggerReceiver extends BroadcastReceiver {
         if (options == null)
             return;
 
-        if (isFirstAlarmInFuture(options))
-            return;
+        //if (isFirstAlarmInFuture(options))
+        //    return;
 
         Builder builder = new Builder(options);
         Notification notification = buildNotification(builder);
