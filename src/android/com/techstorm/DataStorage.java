@@ -1,12 +1,13 @@
 package com.techstorm;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 
 
 @SuppressLint("SimpleDateFormat")
@@ -19,6 +20,7 @@ public class DataStorage {
 	private static final String DATA_TIME_FROM = "TIME_FROM";
 	private static final String DATA_TIME_TO = "TIME_TO";
 	private static final String DATA_MP3 = "MP3";
+	private static final String DATA_TEXT_MESSAGE = "TEXT_MESSAGE";
 	
 	
 	public static long getInterval(Context context) {
@@ -98,6 +100,20 @@ public class DataStorage {
 				.getSharedPreferences(PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString(DATA_MP3, mp3);
+		editor.commit();
+	}
+
+	public static String getTextMessage(Context context) {
+		SharedPreferences settings = context
+				.getSharedPreferences(PREFS_NAME, 0);
+		return settings.getString(DATA_TEXT_MESSAGE, "");
+	}
+
+	public static void setTextMessage(Context context, String textMessage) {
+		SharedPreferences settings = context
+				.getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString(DATA_TEXT_MESSAGE, textMessage);
 		editor.commit();
 	}
 	
