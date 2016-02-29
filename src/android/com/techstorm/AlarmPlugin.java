@@ -110,7 +110,7 @@ public class AlarmPlugin extends CordovaPlugin {
 
 						JSONObject options = new JSONObject();
 						options.put("text", DataStorage.getTextMessage(context));
-						options.put("every", String.valueOf(interval/60));
+						options.put("every", String.valueOf(interval));
 						options.put("sound", "file://sounds/"+DataStorage.getMp3(context));
 						options.put("icon", "res://icon");
 						options.put("smallIcon", "res://ic_popup");

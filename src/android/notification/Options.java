@@ -117,7 +117,7 @@ public class Options {
             interval = AlarmManager.INTERVAL_DAY * 365;
         } else {
             try {
-                interval = Integer.parseInt(every);
+                interval = Integer.parseInt(every) * 1000;
             } catch (Exception e) {
                 e.printStackTrace();
             }
