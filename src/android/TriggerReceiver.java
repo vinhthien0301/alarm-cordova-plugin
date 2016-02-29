@@ -23,6 +23,10 @@
 
 package de.appplant.cordova.plugin.localnotification;
 
+import android.content.Context;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+
 import de.appplant.cordova.plugin.notification.Builder;
 import de.appplant.cordova.plugin.notification.Notification;
 
@@ -49,6 +53,9 @@ public class TriggerReceiver extends de.appplant.cordova.plugin.notification.Tri
 
         if (!updated) {
             LocalNotification.fireEvent("trigger", notification);
+            PowerManager pm = (PowerManager) notification.getContext().getApplicationContext().getSystemService(Context.POWER_SERVICE);
+            WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
+            wakeLock.acquire(3000);
         }
     }
 
