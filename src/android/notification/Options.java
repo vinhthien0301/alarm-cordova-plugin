@@ -40,23 +40,23 @@ import java.util.Date;
  * methods to convert independent values into platform specific values.
  */
 public class Options {
-
+    
     // Key name for bundled extras
-    static final String EXTRA = "NOTIFICATION_OPTIONS";
-
+    public static final String EXTRA = "NOTIFICATION_OPTIONS";
+    
     // The original JSON object
     private JSONObject options = new JSONObject();
-
+    
     // Repeat interval
     private long interval = 0;
-
+    
     // Application context
     private final Context context;
-
+    
     // Asset util instance
     private final AssetUtil assets;
-
-
+    
+    
     /**
      * Constructor
      *
@@ -64,10 +64,10 @@ public class Options {
      *      Application context
      */
     public Options(Context context){
-    	this.context = context;
+        this.context = context;
         this.assets  = AssetUtil.getInstance(context);
     }
-
+    
     /**
      * Parse given JSON properties.
      *
@@ -76,65 +76,65 @@ public class Options {
      */
     public Options parse (JSONObject options) {
         this.options = options;
-
+        
         parseInterval();
         parseAssets();
-
+        
         return this;
     }
-
+    
     /**
      * Parse repeat interval.
      */
     private void parseInterval() {
         String every = options.optString("every").toLowerCase();
-
+        
         if (every.isEmpty()) {
             interval = 0;
         } else
-        if (every.equals("second")) {
-            interval = 1000;
-        } else
-        if (every.equals("minute")) {
-            interval = AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15;
-        } else
-        if (every.equals("hour")) {
-            interval = AlarmManager.INTERVAL_HOUR;
-        } else
-        if (every.equals("day")) {
-            interval = AlarmManager.INTERVAL_DAY;
-        } else
-        if (every.equals("week")) {
-            interval = AlarmManager.INTERVAL_DAY * 7;
-        } else
-        if (every.equals("month")) {
-            interval = AlarmManager.INTERVAL_DAY * 31;
-        } else
-        if (every.equals("quarter")) {
-            interval = AlarmManager.INTERVAL_HOUR * 2190;
-        } else
-        if (every.equals("year")) {
-            interval = AlarmManager.INTERVAL_DAY * 365;
-        } else {
-            try {
-                interval = Integer.parseInt(every) * 1000;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+            if (every.equals("second")) {
+                interval = 1000;
+            } else
+                if (every.equals("minute")) {
+                    interval = AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15;
+                } else
+                    if (every.equals("hour")) {
+                        interval = AlarmManager.INTERVAL_HOUR;
+                    } else
+                        if (every.equals("day")) {
+                            interval = AlarmManager.INTERVAL_DAY;
+                        } else
+                            if (every.equals("week")) {
+                                interval = AlarmManager.INTERVAL_DAY * 7;
+                            } else
+                                if (every.equals("month")) {
+                                    interval = AlarmManager.INTERVAL_DAY * 31;
+                                } else
+                                    if (every.equals("quarter")) {
+                                        interval = AlarmManager.INTERVAL_HOUR * 2190;
+                                    } else
+                                        if (every.equals("year")) {
+                                            interval = AlarmManager.INTERVAL_DAY * 365;
+                                        } else {
+                                            try {
+                                                interval = Integer.parseInt(every) * 1000;
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
     }
-
+    
     /**
      * Parse asset URIs.
      */
     private void parseAssets() {
-
+        
         if (options.has("iconUri") && !options.optBoolean("updated"))
             return;
-
+        
         Uri iconUri  = assets.parse(options.optString("icon", "icon"));
         Uri soundUri = assets.parseSound(options.optString("sound", null));
-
+        
         try {
             options.put("iconUri", iconUri.toString());
             options.put("soundUri", soundUri.toString());
@@ -142,114 +142,114 @@ public class Options {
             e.printStackTrace();
         }
     }
-
+    
     /**
      * Application context.
      */
     public Context getContext () {
         return context;
     }
-
+    
     /**
      * Wrapped JSON object.
      */
     JSONObject getDict () {
         return options;
     }
-
+    
     /**
      * Text for the local notification.
      */
     public String getText() {
         return options.optString("text", "");
     }
-
+    
     /**
      * Repeat interval (day, week, month, year, aso.)
      */
     public long getRepeatInterval() {
         return interval;
     }
-
+    
     /**
      * Badge number for the local notification.
      */
     public int getBadgeNumber() {
         return options.optInt("badge", 0);
     }
-
+    
     /**
      * ongoing flag for local notifications.
      */
     public Boolean isOngoing() {
         return options.optBoolean("ongoing", false);
     }
-
+    
     /**
      * autoClear flag for local notifications.
      */
     public Boolean isAutoClear() {
         return options.optBoolean("autoClear", false);
     }
-
+    
     /**
      * ID for the local notification as a number.
      */
     public Integer getId() {
         return options.optInt("id", 0);
     }
-
+    
     /**
      * ID for the local notification as a string.
      */
     public String getIdStr() {
         return getId().toString();
     }
-
+    
     /**
      * Trigger date.
      */
     public Date getTriggerDate() {
         return new Date(getTriggerTime());
     }
-
+    
     /**
      * Trigger date in milliseconds.
      */
     public long getTriggerTime() {
         return options.optLong("at", 0) * 1000;
     }
-
+    
     /**
      * Title for the local notification.
      */
     public String getTitle() {
         String title = options.optString("title", "");
-
+        
         if (title.isEmpty()) {
             title = context.getApplicationInfo().loadLabel(
-                    context.getPackageManager()).toString();
+                                                           context.getPackageManager()).toString();
         }
-
+        
         return title;
     }
-
+    
     /**
      * @return
      *      The notification color for LED
      */
     public int getLedColor() {
         String hex = options.optString("led", null);
-
+        
         if (hex == null) {
             return NotificationCompat.DEFAULT_LIGHTS;
         }
-
+        
         int aRGB = Integer.parseInt(hex, 16);
-
+        
         return aRGB + 0xFF000000;
     }
-
+    
     /**
      * @return
      *      The notification background color for the small icon
@@ -257,37 +257,37 @@ public class Options {
      */
     public int getColor() {
         String hex = options.optString("color", null);
-
+        
         if (hex == null) {
             return NotificationCompat.COLOR_DEFAULT;
         }
-
+        
         int aRGB = Integer.parseInt(hex, 16);
-
+        
         return aRGB + 0xFF000000;
     }
-
+    
     /**
      * Sound file path for the local notification.
      */
     public Uri getSoundUri() {
         Uri uri = null;
-
+        
         try{
             uri = Uri.parse(options.optString("soundUri"));
         } catch (Exception e){
             e.printStackTrace();
         }
-
+        
         return uri;
     }
-
+    
     /**
      * Icon bitmap for the local notification.
      */
     public Bitmap getIconBitmap() {
         Bitmap bmp;
-
+        
         try {
             Uri uri = Uri.parse(options.optString("iconUri"));
             bmp = assets.getIconFromUri(uri);
@@ -295,43 +295,43 @@ public class Options {
             e.printStackTrace();
             bmp = assets.getIconFromDrawable("icon");
         }
-
+        
         return bmp;
     }
-
+    
     /**
      * Icon resource ID for the local notification.
      */
     public int getIcon () {
         String icon = options.optString("icon", "");
-
+        
         int resId = assets.getResIdForDrawable(icon);
-
+        
         if (resId == 0) {
             resId = getSmallIcon();
         }
-
+        
         if (resId == 0) {
             resId = android.R.drawable.ic_popup_reminder;
         }
-
+        
         return resId;
     }
-
+    
     /**
      * Small icon resource ID for the local notification.
      */
     public int getSmallIcon () {
         String icon = options.optString("smallIcon", "");
-
+        
         return assets.getResIdForDrawable(icon);
     }
-
+    
     /**
      * JSON object as string.
      */
     public String toString() {
         return options.toString();
     }
-
+    
 }
