@@ -37,7 +37,7 @@ import de.appplant.cordova.plugin.notification.Notification;
  * sound and it vibrates the phone.
  */
 public class TriggerReceiver extends de.appplant.cordova.plugin.notification.TriggerReceiver {
-
+    
     /**
      * Called when a local notification was triggered. Does present the local
      * notification, re-schedule the alarm if necessary and fire trigger event.
@@ -50,15 +50,16 @@ public class TriggerReceiver extends de.appplant.cordova.plugin.notification.Tri
     @Override
     public void onTrigger (Notification notification, boolean updated) {
         super.onTrigger(notification, updated);
-
+        
         if (!updated) {
             LocalNotification.fireEvent("trigger", notification);
             PowerManager pm = (PowerManager) notification.getContext().getApplicationContext().getSystemService(Context.POWER_SERVICE);
             WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
             wakeLock.acquire(3000);
+            notification.schedule();
         }
     }
-
+    
     /**
      * Build notification specified by options.
      *
@@ -68,10 +69,10 @@ public class TriggerReceiver extends de.appplant.cordova.plugin.notification.Tri
     @Override
     public Notification buildNotification (Builder builder) {
         return builder
-                .setTriggerReceiver(TriggerReceiver.class)
-                .setClickActivity(ClickActivity.class)
-                .setClearReceiver(ClearReceiver.class)
-                .build();
+        .setTriggerReceiver(TriggerReceiver.class)
+        .setClickActivity(ClickActivity.class)
+        .setClearReceiver(ClearReceiver.class)
+        .build();
     }
-
+    
 }
